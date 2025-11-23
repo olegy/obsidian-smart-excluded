@@ -82,5 +82,20 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					});
 			})
+
+		// Add focus on workspace folder setting
+		containerEl.createEl('h2', { text: 'File Tree Alternative Integration' });
+
+		new Setting(containerEl)
+			.setName('Focus on workspace folder')
+			.setDesc('When changing workspaces, automatically focus on the folder with the same name in the File Tree Alternative plugin. Requires the File Tree Alternative plugin to be installed and enabled.')
+			.addToggle(toggle => {
+				toggle
+					.setValue(this.plugin.settings.focusOnWorkspaceFolder ?? false)
+					.onChange(async (value) => {
+						this.plugin.settings.focusOnWorkspaceFolder = value;
+						await this.plugin.saveSettings();
+					});
+			})
 	}
 }
