@@ -19,10 +19,6 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 			return;
 		}
 
-		// Add warning about override
-		const warning = containerEl.createEl('div', { cls: 'workspace-exclude-warning' });
-		warning.setText('⚠️ This plugin will override the core "Files and links" excluded files setting based on the conditions below.');
-
 		const { workspaces } = plugin;
 
 		// List all workspaces and provide per-workspace exclude configuration
@@ -31,16 +27,19 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 			return;
 		}
 
+		// Excluded files per workspace section
+		containerEl.createEl('h2', { text: 'Excluded files per workspace' });
+		containerEl.createEl('div', { cls: 'setting-item', text: 'This will override the core "Files and links" excluded files setting based on workspace setting.' });
+
 		const notify = debounce((workspace) => {
 			new Notice(`${this.plugin.name}: Excluded files for workspace "${workspace}" updated.`);
 		}, 1000, true)
 
-
 		Object.keys(workspaces).forEach((workspace: string) => {
-			new Setting(containerEl).setName(`Workspace: ${workspace}`).setHeading();
-			new Setting(containerEl)
-				.setName('Excluded files')
-				.setDesc('This will override the core "Files and links" excluded files setting for this workspace.')
+			const workspaceContainer = containerEl.createDiv({ cls: 'workspace-setting-row' });
+			workspaceContainer.createEl('h3', { text: workspace });
+			const settingContainer = workspaceContainer.createDiv({ cls: 'workspace-setting-input' });
+			new Setting(settingContainer)
 				.addTextArea(textarea => {
 					const value = this.plugin.settings.workspaceExcludes?.[workspace]?.join('\n') || '';
 					textarea
@@ -52,10 +51,12 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 							await this.plugin.saveSettings();
 							notify(workspace)
 						});
+					textarea.inputEl.addClass('workspace-exclude-textarea');
+					return textarea;
 				});
 		});
 
-		new Setting(containerEl).setName('Status bar').setHeading();
+		containerEl.createEl('h2', { text: 'Status bar' });
 		new Setting(containerEl)
 			.setName('Show active workspace in status bar')
 			.setDesc('This will show the active workspace in the status bar.')
@@ -70,7 +71,7 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 			})
 
 		// Add auto-save setting
-		new Setting(containerEl).setName('Auto save').setHeading();
+		containerEl.createEl('h2', { text: 'Auto save' });
 		new Setting(containerEl)
 			.setName('Auto save workspace layout on change')
 			.setDesc('Automatically save the current workspace layout whenever a change is made.')

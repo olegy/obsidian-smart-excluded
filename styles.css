@@ -10,3 +10,30 @@ If your plugin does not need CSS, delete this file.
 .smart-excluded-statusbar--hidden{
 	display: none;
 }
+
+.workspace-setting-row {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 15px;
+	gap: 15px;
+}
+
+.workspace-setting-row h3 {
+	margin: 0;
+	padding-top: 8px;
+	min-width: 120px;
+	font-size: 14px;
+}
+
+.workspace-setting-input {
+	flex: 1;
+}
+
+.workspace-setting-input .setting-item {
+	margin-bottom: 0;
+}
+
+.workspace-exclude-textarea {
+	width: 100%;
+	height: 80px;
+}
