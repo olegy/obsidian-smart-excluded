@@ -69,5 +69,18 @@ export class SmartExcludedSettingTab extends PluginSettingTab {
 					});
 			})
 
+		// Add auto-save setting
+		new Setting(containerEl).setName('Auto save').setHeading();
+		new Setting(containerEl)
+			.setName('Auto save workspace layout on change')
+			.setDesc('Automatically save the current workspace layout whenever a change is made.')
+			.addToggle(toggle => {
+				toggle
+					.setValue(this.plugin.settings.saveOnChange ?? false)
+					.onChange(async (value) => {
+						this.plugin.settings.saveOnChange = value;
+						await this.plugin.saveSettings();
+					});
+			})
 	}
 }

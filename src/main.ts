@@ -5,10 +5,12 @@ import { SmartExcludedSettingTab } from './SmartExcludedSettingTab';
 interface SmartExcludedSettings {
 	workspaceExcludes: Record<string, (string | RegExp)[]>;
 	showWorkspaceNameInStatusBar?: boolean;
+	saveOnChange?: boolean;
 }
 
 const DEFAULT_SETTINGS: SmartExcludedSettings = {
-	workspaceExcludes: {}
+	workspaceExcludes: {},
+	saveOnChange: false
 }
 
 export default class SmartExcludedPlugin extends Plugin {
@@ -28,6 +30,15 @@ export default class SmartExcludedPlugin extends Plugin {
 		// There is no exposed event for workspace change, so we use layout-change as a workaround
 		this.registerEvent(this.app.workspace.on('layout-change', () => {
 			const currentActiveWorkspace = this.getWorkspacesPlugin()?.activeWorkspace;
+			
+			// Auto-save workspace layout if the option is enabled (this should happen on all layout changes)
+			if (this.settings.saveOnChange && currentActiveWorkspace) {
+				const workspacesPlugin = this.app.internalPlugins.getEnabledPluginById('workspaces');
+				if (workspacesPlugin) {
+					workspacesPlugin.saveWorkspace(currentActiveWorkspace);
+				}
+			}
+			
 			const activeWorkspaceChanged = currentActiveWorkspace !== this.__previousActiveWorkspace;
 			if (!activeWorkspaceChanged) return;
 			this.setUserIgnoredFiltersByWorkspace(this.getWorkspacesPlugin()?.activeWorkspace);
@@ -87,4 +98,3 @@ export default class SmartExcludedPlugin extends Plugin {
 	}
 
 }
-

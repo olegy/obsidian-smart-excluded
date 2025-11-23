@@ -1,7 +1,7 @@
 {
 	"id": "smart-excluded",
-	"name": "Smart Excluded",
-	"version": "0.1.0",
+	"name": "Smart Excluded [mod]",
+	"version": "0.1.1",
 	"minAppVersion": "0.15.0",
 	"description": "Change Excluded files setting per workspace, active note and more.",
 	"author": "vlwkaos",

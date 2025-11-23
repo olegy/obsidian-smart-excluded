@@ -9,5 +9,6 @@ declare module 'obsidian-typings' {
 		 */
 		activeWorkspace: string;
 		setActiveWorkspace: (workspaceName: string) => void
+		saveWorkspace: (workspaceName: string) => void
 	}
 }

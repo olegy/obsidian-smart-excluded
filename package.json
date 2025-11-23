@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-smart-excluded-plugin",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Change Excluded files setting per workspace, active note and more.",
 	"main": "main.js",
 	"scripts": {
